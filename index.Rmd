@@ -3,9 +3,13 @@ title: "A3: SPL Library Checkouts"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ### Introduction
 
-An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!)
+For this assignment, I want to look at the most popular authors based on the Seattle Public Library Checkout data. Specifically, I will be comparing the five most checked-out authors for both physical books and digital alternatives over the past few years. I chose to examine physical books separate from ebooks and audiobooks because I’m curious if the medium of books will affect which authors are most popular. This could raise interesting questions like if some author’s works are better experienced through digital mediums. After that, I will break down the genres of each book the most popular authors wrote to see if there is any takeaway about the most popular genres in Seattle library users.  
 
 ### Summary Information
 
@@ -20,67 +24,56 @@ These will likely be calculated using your DPLYR skills, answering questions suc
 
 Feel free to calculate and report values that you find relevant.
 
+```{r, echo=FALSE, code = readLines("A3summary.R")}
+```
+
+The library has `r total_unlabled` items that are missing an author or creator. Of those `r book_unlabled_count` are physical books, `r ebook_unlabled_count` are ebooks, and `r audiobook_unlabled_count` are audiobooks. The other `r total_credited` items are all credited with an author or creator. That is the data that this assignment will analyze. The most popular book overall among the three mediums is `r most_popular_book`, which was written by `r most_popular_author`. 
+
 ### The Dataset
 
-- Who collected/published the data?  
-- What are the parameters of the data (dates, number of checkouts, kinds of books, etc.)?
-- How was the data collected or generated?  
-- Why was the data collected?  
-- What, if any, ethical questions do you need to consider when working with this data?  
-- What are possible limitations or problems with this data?   (at least 200 words)
-
+This dataset was collected and published by the Seattle Public Library. The dataset tracks all checkouts from the library, which includes books (of all kinds), music, discs (video and sound), and various other library resources. For each item, the dataset tracks:
+- the usage class of each item
+- the way it was checked out
+- the type of item it was
+- the month and year it was checked out
+- the amount of times it was checked out for the respective month and year
+- the name or title of the item
+- the ISBN (International Standard Book Number) if applicable
+- the item’s creator or author
+- the item’s subject or genre 
+- the publisher
+- and the publication date (typically just the year)
+This data was generated from the library’s system tracking the movement of resources that were logged. This dataset began in April of 2005 and was last updated February 6, 2023. This dataset doesn’t track any specific people so privacy isn’t a concern. Instead, since this dataset is messy, the biggest ethical concerns while using it are likely related to copyright and proper credit, as many accomplished creators’ works could be buried under inefficient labeling. This dataset only tracks behavior logged in the Seattle Public Library’s system, and as such is somewhat limited in scope. This means the data can’t be used to make assumptions about book popularity as a whole. There are a lot of items with missing values as well, which should be taken into consideration when analyzing the dataset.
 
 ### First Trends Over Time Chart
 
-Include a chart. Make sure to describe why you included the chart, and what patterns emerged
+This chart is a trends-over-time chart that looks at the five most popular authors in the Seattle Public Library Database based on book checkouts. These authors were selected by having the highest total all-time checkout counts, and they are compared using their checkout count for each year between 2005 and 2022. For this chart I only looked at physical book checkouts because I wanted to compare these results to other formats. 
 
-The first chart that you will create and include will show the trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
+One thing I noticed from the chart's results is that by far the most checked out authors are children's book authors. The ones that don't specialize in books for children in the top five and ten book checkouts are mostly writers of short and accessible literature like comic artists or young adult novelists. Overall, the trend of checkout data since 2005 has been that checkout counts for all authors have gone up, but it is unclear whether this is due to more customers, increased supply of books for each author, higher reading rates, or something else entirely.
 
-- Show more than one, but fewer than ~10 trends
-  - For example, two books, or 5 different mediums
-- You must have clear x and y axis labels
-- The chart needs a clear title 
-- You need a legend for your different line colors and a clear - legend title
-In your .Rmd file, make sure to describe why you included the chart, and what patterns emerged
-
-When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
-
-Here's an example of how to run an R script inside an RMarkdown file:
-
-``````{r, echo = FALSE, warning = FALSE, code = readLines("chart1_example.R")}
-```
+``````{r, echo = FALSE, warning = FALSE, code = readLines("Chart1.R")}
+``````
 
 ### Second Trends Over Time Chart
 
 Include a chart. Make sure to describe why you included the chart, and what patterns emerged
 
-The second chart that you will create and include will show another trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
+This chart is a trends-over-time chart that looks at the five most popular creators in the Seattle Public Library Database based on ebook and audiobook checkouts. These authors were selected by having the highest total all-time checkout counts, and they are compared using their checkout count for each year between 2005 and 2022. For this chart I explored ebook and audiobook creators, because I wanted to see if the different medium would affect author checkout rates.
 
-- Show more than one, but fewer than ~10 trends
-  - For example, two books, or 5 different mediums
-- You must have clear x and y axis labels
-- The chart needs a clear title 
-- You need a legend for your different line colors and a clear - legend title
-In your .Rmd file, make sure to describe why you included the chart, and what patterns emerged
+One thing I noticed from the chart's results is that they are wildly different to the popular authors for physical book checkouts. There were fewer childrens book authors, and far more classics and young adult novelists. It seems as a trend popular ebook and audiobook authors' audiences skew older, but there is still a preference for accessible works from authors with high output rates. Overall, the trend of this checkout data is also that checkout counts for all authors have gone up over time, but it is still unclear whether this is due to more customers, increased supply of books for each author, higher reading rates, or something else entirely.
 
-When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
+``````{r, echo = FALSE, code = readLines("Chart2.R")}
+``````
 
-Here's an example of how to run an R script inside an RMarkdown file:
+### Stacked Bar Chart
 
-``````{r, echo = FALSE, code = readLines("chart2_example.R")}
-```
+This final chart is a stacked bar chart that compares the top creators of physical books to the top creators of ebooks and audiobooks. Since there is already data in the previous charts related to their checkout counts, I wanted to instead explore the amount of works each creator has in the library, as well as the popular genres among the creators. 
 
-### Your Choice
+This chart showed a major outlier in book amount from James Patterson, and that overall popular authors tended to have a large amount of works, but that it wasn't a requirement. As for genres, the data was very messy, and so the most popular genre was just the generic label of "Fiction". There were a couple interesting genres in the top ten for these creators, which included African American Fiction, Law, and True Crime. 
 
-The last chart is up to you. It could be a line plot, scatter plot, histogram, bar plot, stacked bar plot, and more. Here are some requirements to help guide your design:
+This chart is a very rough, as the data involved was very messy. These only look at each authors physical or ebook counts respectively, rather than everything they have in the library. The book count is an approximation as well, as the library database has a large amount of repeat entries. I mostly combined the repeats, but at the cost of lumping together a lot of book series into one entry. The genre information is also very rough, as many books had unique subjects exlusive to their creator or series. This chart also ignores books tagged with more than one genre.
 
-- You must have clear x and y axis labels
-- The chart needs a clear title 
-- You need a legend for your different line colors and a clear legend title
-
-Here's an example of how to run an R script inside an RMarkdown file:
-
-``````{r, echo = FALSE, code = readLines("chart2_example.R")}
-```
+``````{r, echo = FALSE, code = readLines("Chart3.R")}
+``````
 
 

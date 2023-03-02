@@ -32,7 +32,16 @@ most_popular <- spl_data %>%
            MaterialType == "AUDIOBOOK") %>%
   group_by(Title) %>%
   summarize(Checkouts = sum(Checkouts)) %>%  
-  filter(Title != "<Unknown Title>" |
-           !grepl("", Title, fixed = TRUE))
+  filter(Title != "<Unknown Title>") %>%
+  filter(!grepl("Uncataloged", Title, fixed = TRUE))
 
-#most_popular_author 
+most_popular_book <- most_popular %>%
+  arrange(-Checkouts) %>%
+  slice(1) %>%
+  pull(Title)
+
+most_popular_author <- spl_data %>%
+  filter(Title == most_popular_book) %>%
+  na.omit() %>%
+  slice(1) %>%
+  pull(Creator)
